@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capy Music</title>
+    <script src="js/inicio.js" type="module"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .navbar-like {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-like h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-menu button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .user-menu button:focus {
+            outline: none;
+        }
+
+        .user-menu button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+        }
+
+        .dropdown a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .user-menu:hover .dropdown {
+            display: block;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content h2 {
+            margin: 0;
+            font-size: 24px;
+            text-align: left;
+        }
+
+        .add-song-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-song-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .song-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 75%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .song-card {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: left;
+        }
+
+        .song-card img {
+            width: 50px;
+            /* Tamaño reducido */
+            height: 50px;
+            border-radius: 10px;
+            margin-right: 10px;
+            /* Espaciado entre la imagen y los datos */
+        }
+
+        .song-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .song-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .song-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .content {
+            padding: 0px;
+            /* Reducir el padding interno */
+            margin-top: 35px;
+            /* Reducir el margen superior */
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 12.2%;
+            /* Ajustar márgenes si es necesario */
+        }
+
+        .content-header h1 {
+            margin: 0;
+        }
+
+        /* Contenedor de los botones */
+        .song-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Estilo de los botones */
+        .song-actions .edit-btn,
+        .song-actions .delete-btn {
+            padding: 5px 5px;
+            width: 55px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #fff;
+            background-color: #28a745;
+            transition: background-color 0.3s ease;
+        }
+
+        .song-actions .delete-btn {
+            background-color: #dc3545;
+            /* Color rojo */
+        }
+
+        .song-actions .edit-btn:hover {
+            background-color: #218838;
+        }
+
+        .song-actions .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .page-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .page-btn.active {
+            background-color: #0056b3;
+            font-weight: bold;
+        }
+
+        .page-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar-like">
+        <h1>Capy Music</h1>
+        <div class="user-menu">
+            <button>
+                <span>&#128100;</span> <!-- Ícono de usuario -->
+            </button>
+            <div class="dropdown">
+                <a href="#" id="logout">Salir</a>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content-header">
+            <h1>Mi Música</h1>
+            <button class="add-song-btn" id="add-song-btn">Agregar Canción</button>
+        </div>
+        <div class="song-list">
+
+        </div>
+        <div class="pagination" style="text-align: center; margin-top: 20px;"></div>
+    </div>
+
+    <script src="js/inicio.js" type="module"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>
